@@ -22,7 +22,10 @@ static int Major = MAJOR_NUMBER;
 static int Major = 0;
 #endif
 
-static struct file_operations fops = {.write = device_write};
+static struct file_operations fops =
+{
+	.write = device_write,
+};
 
 int init_module(void)
 {

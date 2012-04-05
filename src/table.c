@@ -20,10 +20,20 @@ static char table[NUM_CHARACTERS][MAX_CHAR_LENGTH];
 
 static /*@null@*/ char* translations_file = "lmorse_translations";
 
+/* Inserts the given key-value pair into the table.
+ * Preconditions:
+ * 	Value is not NULL
+ * 	key is >= 0
+ */
 static void insert(int /* key */, char* /* value */)
 	/*@globals table@*/
 	/*@modifies table@*/;
 
+/* Converts the given character to uppercase. The only
+ * characters that are modified are those which were originally
+ * lowercase alphabet characters (a-z). Everything else will be
+ * left untouched.
+ */
 static char to_uppercase(char /*original*/);
 
 void build_table(char* file)

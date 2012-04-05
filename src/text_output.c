@@ -24,10 +24,28 @@
 #define FALSE 0
 #endif
 
+/* Outputs the provided morse code translation using the keyboard
+ * LEDs as a single character - that is, with only a single
+ * DOT_LENGTH pause between each flash.
+ * Preconditions:
+ * 	The driver has been opened
+ * 	The morse_string is not NULL or unallocated, is null-terminated,
+ * 	and contains a series of '-' and '.' characters.
+ */
 static void output_character(char* /* morse_string */)
 	/*@globals errno, fileSystem, internalState@*/
 	/*@modifies errno, fileSystem, internalState@*/;
 
+/* Outputs the provided word using the keyboard LEDs as a single morse
+ * word - that is, with a single DASH_LENGTH pause between each character.
+ * The 'word' here is not a morse translation, but the original text to
+ * be translated.
+ * Preconditions:
+ * 	The driver has been opened
+ * 	The morse_string is not NULL or unallocated, is null-terminated,
+ * 	and contains a series of characters specified in a translations
+ * 	file that has been read.
+ */
 static void output_word(char* /* word */)
 	/*@globals errno, fileSystem, internalState@*/
 	/*@modifies errno, fileSystem, internalState@*/;
@@ -94,5 +112,4 @@ static void output_word(char* word)
 		index++;
 	}
 }
-
 

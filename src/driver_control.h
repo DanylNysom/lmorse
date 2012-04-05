@@ -51,22 +51,46 @@
 
 /********** End Light Control **********/
 
-
+/* Closes the driver file
+ */
 void close_driver(void)
 	/*@globals errno, fileSystem, internalState@*/
 	/*@modifies errno, fileSystem, internalState@*/;
 
+/* Pauses for CHAR_BREAK_LENGTH microseconds, the duration of
+ * time between separate characters of a word in morse code.
+ * Precondition:
+ * 	The driver has been opened previously
+ */
 void character_break(void)
 	/*@modifies@*/;
 
+/* Flashes the LEDs specified by LIGHTS, depending on flash_type.
+ * If flash_type is '-', the lights will be flashed for the
+ * duration of a morse code dash (DASH_LENGTH microseconds).
+ * If flash_type is '.', the lights will be flashed for the
+ * duration of a dit.
+ * Precondition:
+ * 	The driver has been opened previously
+ */
 void flash_once(char /* flash_type */)
 	/*@globals errno, fileSystem, internalState@*/
 	/*@modifies errno, fileSystem, internalState@*/;
 
+/* Opens the driver file. This should be executed before
+ * any other function in this file.
+ * Precondition:
+ * 	The driver file needs to have been created for this to work
+ */
 void open_driver(void)
 	/*@globals errno, fileSystem, internalState@*/
 	/*@modifies errno, fileSystem, internalState@*/;
 	
+/* Pauses for WORD_BREAK_LENGTH microseconds, the duration of
+ * time between separate words of a message in morse code.
+ * Precondition:
+ * 	The driver has been opened previously
+ */
 void word_break(void)
 	/*@modifies@*/;
 

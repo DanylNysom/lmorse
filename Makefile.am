@@ -7,6 +7,5 @@ dist_doc_DATA = readme.txt
 dist-hook:
 	mkdir $(distdir)/module
 	cp module/Makefile module/myleds.c module/myleds.h $(distdir)/module
-	cp mymakefile $(distdir)
 run: all
 	src/lmorse HELLO WORLD

@@ -38,14 +38,30 @@
 #define MAX_CHAR_LENGTH 10
 #endif
 
+/* Adds to the table the character-to-morse translations from the given translations
+ * file. The file should contain data in the format:
+ * <character> <translation>
+ * where the <translation> contains only '-'s and '.'s
+ * If 'file' is NULL, the default translations file will be used
+ */
 void build_table(/*@null@*/char* /*file*/)
 	/*@globals errno, fileSystem, internalState, MAX_CHAR_LENGTH, NUM_CHARACTERS@*/
 	/*@modifies errno, fileSystem, internalState@*/;
 
+/* Makes it so the default translations file will not be used at all for the current
+ * execution, even if build_table(NULL) is called.
+ * This will only do anything if the default file has not already been used. It will
+ * not removed any translations that have already been processed.
+ */
 void disable_default_translations(void)
 	/*@globals internalState@*/
 	/*@modifies internalState@*/;
 
+/* Returns the morse string (in the form of '-'s and '.'s) corresponding to the given
+ * key. The key should just be the ASCII value of the desired character, as that is
+ * how this implementation currently stores the translations. Eventually I may make
+ * it fancier.
+ */
 char* retreive(char /*key*/)
 	/*@globals internalState@*/;
 #endif

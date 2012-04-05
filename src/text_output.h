@@ -33,15 +33,26 @@
 
 /********** End Special Morse Characters **********/
 
-
+/* Translates the first 'num_words' strings in 'words' into morse code, and
+ * outputs the translations using the keyboard LEDs.
+ * If do_proper is TRUE, MORSE_START will be output before the message,
+ * and MORSE_END after. These are special sequences to signify the beginning
+ * and end of transmissions.
+ * Precondition:
+ * 	The first 'num_words' entries in 'words' have been allocated and are
+ * 	not NULL.
+ * 	The driver has been opened.
+ */
 void output_message(int /*num_words*/, char* /*words*/[], int /*do_proper*/)
 	/*@globals errno, fileSystem, internalState@*/
 	/*@modifies errno, fileSystem, internalState@*/;
 
+/* Prepares the system to output a morse code message, by opening the driver
+ * file and filling the table with the translations in the default translations
+ * file, if not already done.
+ */
 void prepare_to_output(void)
 	/*@globals errno, fileSystem, internalState@*/
 	/*@modifies errno, fileSystem, internalState@*/;
-
-
 
 #endif

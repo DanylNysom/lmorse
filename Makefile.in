@@ -845,7 +845,6 @@ uninstall-man: uninstall-man4 uninstall-man6
 dist-hook:
 	mkdir $(distdir)/module
 	cp module/Makefile module/myleds.c module/myleds.h $(distdir)/module
-	cp mymakefile $(distdir)
 run: all
 	src/lmorse HELLO WORLD
 
