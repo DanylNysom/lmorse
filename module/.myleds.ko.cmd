@@ -1,1 +1,0 @@
-cmd_/home/dylan/Documents/Langara/CPSC/2280/labs/lab07/module/myleds.ko := ld -r -m elf_x86_64 -T /usr/src/linux-2.6.37.6/scripts/module-common.lds --build-id  -o /home/dylan/Documents/Langara/CPSC/2280/labs/lab07/module/myleds.ko /home/dylan/Documents/Langara/CPSC/2280/labs/lab07/module/myleds.o /home/dylan/Documents/Langara/CPSC/2280/labs/lab07/module/myleds.mod.o

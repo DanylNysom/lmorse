@@ -1,3 +1,19 @@
+/*  Dylan Symons: lmorse - Flashes the keyboard LEDs in morse code
+    Copyright (C) 2012  Dylan Symons
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #ifndef TABLE_H
 #define TABLE_H
 
@@ -8,17 +24,21 @@
 #include <unistd.h>
 
 /* The number of different characters that can be stored and output
- * (should be >= the number of lines in LETTERS_FILE
+ * (should be >= the number of lines in the translations file),
+ * otherwise the program will just terminate without flashing
+ * the LEDs.
  */
-/*@constant int NUM_CHARACTERS=100@*/
+#ifndef NUM_CHARACTERS
 #define NUM_CHARACTERS 100
+#endif
 
 /* The maximum length (in '-' and '.'s of a single Characters
  */
-/*@constant int MAX_CHAR_LENGTH=10@*/
+#ifndef MAX_CHAR_LENGTH
 #define MAX_CHAR_LENGTH 10
+#endif
 
-void build_table(/*@null@*/ char* /*file*/)
+void build_table(/*@null@*/char* /*file*/)
 	/*@globals errno, fileSystem, internalState, MAX_CHAR_LENGTH, NUM_CHARACTERS@*/
 	/*@modifies errno, fileSystem, internalState@*/;
 

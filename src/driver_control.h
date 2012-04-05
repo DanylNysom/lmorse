@@ -1,3 +1,19 @@
+/*  Dylan Symons: lmorse - Flashes the keyboard LEDs in morse code
+    Copyright (C) 2012  Dylan Symons
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #ifndef DRIVER_CONTROL_H
 #define DRIVER_CONTROL_H
 
@@ -19,18 +35,19 @@
 /********** Light Control **********/
 
 /* Which lights to flash:
- * 	0 is scroll lock
  * 	1 is num lock
  * 	2 is caps lock
+ * 	3 is scroll lock
  *
  * e.g. To flash num and caps lock, put "12" here
  */
-#define LIGHTS "2"
+#define LIGHTS "123"
 
 /* The message to send the driver to turn the lights off
- * Can be anything that doesn't include 0, 1, or 2
+ * Can be anything that doesn't include 1, 2, or 3
+ * (unless you want a light to flash during the breaks)
  */
-#define BREAK "1"
+#define BREAK "x"
 
 /********** End Light Control **********/
 

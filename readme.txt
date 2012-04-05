@@ -16,8 +16,12 @@ This program has two parts:
 
 Included files:
 ----------------------------
+
+- COPYING
+- INSTALL
 - Makefile.am
 - Makefile.in
+- README
 - aclocal.m4
 - config.h.in
 - configure
@@ -34,6 +38,7 @@ Included files:
     - Makefile
     - myleds.c
     - myleds.h
+- mymakefile
 - readme.txt
 - src/
     - Makefile.am
@@ -55,29 +60,21 @@ To run the solution, the driver needs to be
 installed, a makefile generated, the program compiled,
 and finally run. Good luck!
 
-1) There are three options for installing the module:
-    - Automatically, using the default major number of 3333
-    - Automatically, specifying an alternate major number
-    - Step-by-step manually, specifying a major number
-1.1) To install the module automatically with the default
-major number, execute: (including quotes)
+1) To install the driver, execute (including quotes):
 > cd module
 > su -c "make; make install"
 > cd ..
 
-1.2) To install the module automatically with an alternate
-major number, first edit the module/Makefile file to change
-the MAJOR_NUMBER macro to the desired value. Then, edit the
-
-
 2) To build the makefile:
 > ./configure
 
-3.1) To compile and run, with 'HELLO WORLD' output
-> make; make run
+3.1) To compile and run, with 'HELLO WORLD' being output:
+> make
+> make run
 
-3.2) To compile and run, with your own message output
-> make; src/lmorse <message>
+3.2) To compile and run, with your own message output:
+> make
+> src/lmorse <message>
 
 Compiler:
 ----------------------------
@@ -85,11 +82,6 @@ gcc version 4.5.2
 
 Assumptions:
 ----------------------------
-- The driver assigns itself major number 3333.
-  If that's already taken, the file driver/Makefile
-  will need to have the DEVICE_NUMBER changed to
-  something that's open. Or, follow the manual driver
-  install instructions
 
 Conclusions/Remarks:
 ----------------------------
@@ -104,16 +96,18 @@ Conclusions/Remarks:
   such as being able to execute `make run` took a fair big of
   learning, but this is a school assignment and thus a perfect
   opportunity for such. Hopefully I did everything right, and
-  it works on computers other than my own. If not, I've Included
-  a 'mymakefile', which is of the kind I've been using for the
-  previous assignments. Adding a '-f mymakefile' to all the make
-  commands for the userspace program (not the module) will allow
-  that to be used, instead of the autoconf one. Just in case!
+  it works on computers other than my own.
 
 Errors/Bugs:
 ----------------------------
-- Not an error per se, but the hash table I used to
-  store the english-to-morse translations has a fixed
-  length, and each translation also has a fixed length.
-  It actually isn't even really a hash table, just an
-  array indexed by ASCII code.
+- The hash table I used to store the english-to-morse translations
+  has a fixed length, and each translation itself also has a fixed
+  length. If the user specifies their own translations file, and their
+  file contains more than I allowed, the program will be unusable
+  unless recompiled. To increase the number of allowable translations,
+  make the program with `make "CFLAGS=-D NUM_CHARACTERS=<x>"`, which
+  will allow 'x' different character translations.
+  On a side note, the 'hash table' actually isn't even really a hash
+  table, just an array indexed by ASCII code. That's one of the next
+  things I'd like to work on, making it both more dynamic and efficient.
+
