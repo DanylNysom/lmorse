@@ -1,0 +1,99 @@
+# DyLan Symons 100184844
+
+# Full name of the executable to be created
+EXEC=lmorse
+
+
+# Names of files which are both a header and a src file,
+# If "foo.h" and "foo.c" both exist, add "foo." here
+COMMON=led_morse. arg_parsing. driver_control. table. text_output.
+_DEP=$(COMMON)
+_OBJ=$(COMMON)
+
+PARAMETER=HI!
+
+# Flags for passing to compiler, splint, and valgrind
+
+CFLAGS=-I$(IDIR) $(WARNFLAGS) -g -ggdb
+
+	    #-S $(SPECDIR) +lcs $(SPECDIR)/*.lcl 
+SPLINTFLAGS=$(SRCDIR)/*.c -exportfcn -exportconst -boundsread -boundswrite \
+	    -I$(IDIR) \
+	    +posixstrictlib +skipsysheaders \
+	    +stats +showscan >$(SPLINTLOG) 2>&1
+# +posixstrictlib -exportfcn -mod +skip-sys-headers +lcs +lh -unrecog -S $(SPECDIR) 
+
+VALFLAGS=-v --leak-check=full --track-origins=yes --show-reachable=yes --log-file=$(VALLOG)
+
+
+# Set this to whichever splint should be run
+# by calling "make splint"
+# Can be one of: weak standard checks strict (no - needed at beginning)
+DEFSPLINT=strict
+
+
+############# Everything after this should be fine as-is #################
+
+SRCDIR=src
+IDIR=include
+SPECDIR=spec
+DOCDIR=doc
+INSTALLDIR=/usr/local/bin
+CC=gcc
+WARNFLAGS=-W -pedantic -Wall -Werror
+
+SPLINTLOG=splintlog.txt
+VALLOG=vallog.txt
+
+ODIR=obj
+LDIR=../lib
+
+LIBS=-lm
+
+DEP=$(patsubst %., $(IDIR)/%.h, $(_DEP))
+OBJ=$(patsubst %., $(ODIR)/%.o, $(_OBJ))
+
+$(ODIR)/%.o: $(SRCDIR)/%.c $(DEP)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(EXEC): $(OBJ)
+	$(CC) -o $(EXEC) $^ $(CFLAGS) $(LIBS)
+
+param: $(EXEC)
+	./$(EXEC) $(PARAMETER)
+
+run: $(EXEC)
+	./$(EXEC)
+
+install: $(EXEC)
+	cp $(EXEC) $(INSTALLDIR)
+	cp $(DOCDIR)/$(EXEC).6 /usr/local/man/man6/
+
+uninstall:
+	rm -fv $(INSTALLDIR)/$(EXEC) /usr/local/man/man1/$(EXEC).1
+
+.PHONY:
+	clean
+
+clean:
+	rm -fv $(ODIR)/*.o *~ {.,$(IDIR),$(SRCDIR),$(SPECDIR),$(DOCDIR)}/*~ $(EXEC) $(SPLINTLOG) $(VALLOG)
+
+################ For testing: ##################################
+
+val: $(EXEC)
+	valgrind $(VALFLAGS) ./$(EXEC) $(PARAMETER)
+
+splint-weak:
+	splint +weak $(SPLINTFLAGS)
+
+splint-standard:
+	splint +standard $(SPLINTFLAGS)
+
+splint-checks:
+	splint +checks $(SPLINTFLAGS)
+
+splint-strict:
+	splint +strict $(SPLINTFLAGS)
+
+splint:
+	splint +$(DEFSPLINT) $(SPLINTFLAGS)
