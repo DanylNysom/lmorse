@@ -46,8 +46,8 @@ void cleanup_module(void)
 
 static ssize_t device_write(struct file *file_p, const char *input, size_t len, loff_t *off)
 {
-	int retries = 10;
-	int timeout = 100;
+	int retries = 100;
+	int timeout = 10000;
 	int output_message = parse_for_keys(input, len);
 	outb(0xED, 0x60);
 	udelay(timeout);
@@ -55,7 +55,6 @@ static ssize_t device_write(struct file *file_p, const char *input, size_t len, 
 	{
 		retries--;
 		udelay(timeout);
-		printk(KERN_ALERT "Couldn't communicate with controller\n");
 	}
 	if(retries != 0)
 	{
@@ -63,6 +62,7 @@ static ssize_t device_write(struct file *file_p, const char *input, size_t len, 
 	}
 	else
 	{
+		printk(KERN_ALERT "Couldn't communicate with controller\n");
 		return -EBUSY;
 	}
 	return len;

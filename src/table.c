@@ -16,9 +16,16 @@
 */
 #include "table.h"
 
+/* This should be detected automatically */
+static const char* rcdir = "/usr/local/etc/";
+
 static char table[NUM_CHARACTERS][MAX_CHAR_LENGTH];
 
-static /*@null@*/ char* translations_file = "lmorse_translations";
+static char* translations_file = "lmorse_translations";
+
+/* 
+ */
+static char* get_infile_name(char* /* infile */);
 
 /* Inserts the given key-value pair into the table.
  * Preconditions:
@@ -36,7 +43,7 @@ static void insert(int /* key */, char* /* value */)
  */
 static char to_uppercase(char /*original*/);
 
-void build_table(char* file)
+void build_table(char* infile)
 	/*@globals table, translations_file@*/
 	/*@modifies *(table[])*/
 {
@@ -44,25 +51,15 @@ void build_table(char* file)
 	char value[MAX_CHAR_LENGTH];
 	FILE *data_file;
 	int i;
-	char* rcdir = "/usr/local/etc/";
-	if(file == NULL)
-	{
-		file = translations_file;
-		if(access(translations_file, R_OK) == -1)
-		{
-			file = malloc(strlen(translations_file) + strlen(rcdir) + 1);
-			sprintf(file, "%s%s", rcdir, translations_file);
-		}
-	}
-	if(file == NULL)
-	{
-		return;
-	}
+	char* file = NULL;
+	file = get_infile_name(infile);
+
 	if((data_file = fopen(file, "r")) == NULL)
 	{
 		warn("unable to open translations file '%s'", file);
 		exit(EXIT_FAILURE);
 	}
+	free(file);
 
 	for(i = 0; i < NUM_CHARACTERS; i++)
 	{
@@ -100,6 +97,38 @@ char* retreive(char key)
 	return value;
 }
 
+static char* get_infile_name(char* infile)
+{
+	char* file = NULL;
+	if(infile != NULL)
+	{
+		file = malloc(strlen(infile) + 1);
+		if(file == NULL)
+		{
+			fprintf(stderr, "Out of memory, won't add any more translations\n");
+			return;
+		}
+		strcpy(file, infile);
+	}
+	else
+	{
+		file = malloc(strlen(translations_file) + strlen(rcdir) + 1);
+		if(file == NULL)
+		{
+			fprintf(stderr, "Out of memory, won't add any more translations\n");
+			return;
+		}
+		strcpy(file, rcdir);
+		strcat(file, translations_file);
+		if(access(translations_file, R_OK) == -1)
+		{
+			sprintf(file, "%s%s", rcdir, translations_file);
+		}
+	}
+	return file;
+}
+
+
 static void insert(int key, char value[])
 {
 	char tmp[MAX_CHAR_LENGTH];
@@ -110,7 +139,7 @@ static void insert(int key, char value[])
 	}
 	else
 	{
-		err(EXIT_FAILURE, "unable to insert '%s' with key %d", value, key);
+		errx(EXIT_FAILURE, "unable to insert '%s' with key %d, terminating", value, key);
 	}
 }
 

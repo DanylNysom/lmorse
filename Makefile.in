@@ -33,11 +33,10 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 subdir = .
-DIST_COMMON = README $(am__configure_deps) $(dist_doc_DATA) \
-	$(dist_etc_DATA) $(dist_man_MANS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(top_srcdir)/configure COPYING INSTALL depcomp install-sh \
-	missing
+DIST_COMMON = $(am__configure_deps) $(dist_etc_DATA) $(dist_man_MANS) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/config.h.in $(top_srcdir)/configure COPYING INSTALL \
+	depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -80,11 +79,11 @@ am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
 man4dir = $(mandir)/man4
 am__installdirs = "$(DESTDIR)$(man4dir)" "$(DESTDIR)$(man6dir)" \
-	"$(DESTDIR)$(docdir)" "$(DESTDIR)$(etcdir)"
+	"$(DESTDIR)$(etcdir)"
 man6dir = $(mandir)/man6
 NROFF = nroff
 MANS = $(dist_man_MANS)
-DATA = $(dist_doc_DATA) $(dist_etc_DATA)
+DATA = $(dist_etc_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
@@ -216,7 +215,6 @@ SUBDIRS = src
 dist_man_MANS = doc/lmorse.6 doc/myleds.4
 etcdir = $(prefix)/etc
 dist_etc_DATA = etc/lmorse_translations
-dist_doc_DATA = readme.txt
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -348,26 +346,6 @@ uninstall-man6:
 	test -z "$$files" || { \
 	  echo " ( cd '$(DESTDIR)$(man6dir)' && rm -f" $$files ")"; \
 	  cd "$(DESTDIR)$(man6dir)" && rm -f $$files; }
-install-dist_docDATA: $(dist_doc_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(docdir)" || $(MKDIR_P) "$(DESTDIR)$(docdir)"
-	@list='$(dist_doc_DATA)'; test -n "$(docdir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(docdir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(docdir)" || exit $$?; \
-	done
-
-uninstall-dist_docDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(dist_doc_DATA)'; test -n "$(docdir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(docdir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(docdir)" && rm -f $$files
 install-dist_etcDATA: $(dist_etc_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(etcdir)" || $(MKDIR_P) "$(DESTDIR)$(etcdir)"
@@ -720,7 +698,7 @@ check: check-recursive
 all-am: Makefile $(MANS) $(DATA) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(man4dir)" "$(DESTDIR)$(man6dir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(etcdir)"; do \
+	for dir in "$(DESTDIR)$(man4dir)" "$(DESTDIR)$(man6dir)" "$(DESTDIR)$(etcdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -769,7 +747,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-dist_docDATA install-dist_etcDATA install-man
+install-data-am: install-dist_etcDATA install-man
 
 install-dvi: install-dvi-recursive
 
@@ -815,8 +793,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-dist_docDATA uninstall-dist_etcDATA \
-	uninstall-man
+uninstall-am: uninstall-dist_etcDATA uninstall-man
 
 uninstall-man: uninstall-man4 uninstall-man6
 
@@ -830,15 +807,14 @@ uninstall-man: uninstall-man4 uninstall-man6
 	distcheck distclean distclean-generic distclean-hdr \
 	distclean-tags distcleancheck distdir distuninstallcheck dvi \
 	dvi-am html html-am info info-am install install-am \
-	install-data install-data-am install-dist_docDATA \
-	install-dist_etcDATA install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-man4 install-man6 \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	installdirs-am maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am tags \
-	tags-recursive uninstall uninstall-am uninstall-dist_docDATA \
+	install-data install-data-am install-dist_etcDATA install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-man4 install-man6 install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+	pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
 	uninstall-dist_etcDATA uninstall-man uninstall-man4 \
 	uninstall-man6
 

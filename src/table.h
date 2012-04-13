@@ -64,4 +64,5 @@ void disable_default_translations(void)
  */
 char* retreive(char /*key*/)
 	/*@globals internalState@*/;
+
 #endif

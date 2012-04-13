@@ -3,7 +3,6 @@ SUBDIRS = src
 dist_man_MANS = doc/lmorse.6 doc/myleds.4
 etcdir = $(prefix)/etc
 dist_etc_DATA = etc/lmorse_translations
-dist_doc_DATA = readme.txt
 dist-hook:
 	mkdir $(distdir)/module
 	cp module/Makefile module/myleds.c module/myleds.h $(distdir)/module
